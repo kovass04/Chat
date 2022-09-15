@@ -1,0 +1,74 @@
+﻿@page
+@model test_Chat.Pages.Chats.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    string name = HttpContext.Request.Query["username"];
+}
+
+<h1>Index</h1>
+
+<table class="table ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MessageChatSnterface[0].Chat)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.MessageChatSnterface) {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Chat)
+            </td>
+            <td>
+                    <a asp-page="/Chats/Chat" asp-route-username="@item.User" asp-route-userget="@item.Chat" asp-route-TypeChat="@item.TypeChat">Choose this Chat</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-route-username="@name">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MessageChatSnterfacePost.Chat" class="control-label"></label>
+                <input asp-for="MessageChatSnterfacePost.Chat" class="form-control" />
+                <span asp-validation-for="MessageChatSnterfacePost.Chat" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="MessageChatSnterfacePost.TypeChat" class="form-control" value="Group"/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-route-username="@name">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MessageChatSnterfacePost.Chat" class="control-label"></label>
+                <input asp-for="MessageChatSnterfacePost.Chat" class="form-control" />
+                <span asp-validation-for="MessageChatSnterfacePost.Chat" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="MessageChatSnterfacePost.TypeChat" class="form-control" value="Private" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+

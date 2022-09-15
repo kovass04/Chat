@@ -1,0 +1,128 @@
+﻿@page
+@model test_Chat.Pages.Chats.ChatModel
+@{
+    string name = HttpContext.Request.Query["username"];
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<h4>MessageChatSnterface</h4>
+<hr />
+<table class="table ">
+    <thead>
+        <tr>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.AllChats[0].UserName)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.AllChats[0].Message)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AllChats)
+        {
+            <tr>
+
+                <td>
+                    @if (name == item.UserName)
+                    {
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    }
+                    else
+                    {
+                        <a asp-page="/Chats/Chat" asp-route-username="@name" asp-route-userget="@item.UserName" asp-route-TypeChat="Private">@Html.DisplayFor(modelItem => item.UserName)</a>
+                    }
+                    
+                    
+                    
+                    
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                    
+                </td>
+
+                <td>
+                    @if (name == item.UserName)
+                    {
+                        <h4>Edit message</h4>
+                        <form method="post" asp-page-handler="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <input type="hidden" asp-for="AllChatsPost.Id" value="@item.Id" />
+                            <input type="hidden" asp-for="AllChatsPost.UserName" class="form-control" value="@item.UserName" />
+
+                            <div class="form-group">
+                                <label asp-for="AllChatsPost.Message" class="control-label"></label>
+                                <input asp-for="AllChatsPost.Message" class="form-control" value="@item.Message" />
+                                <span asp-validation-for="AllChatsPost.Message" class="text-danger"></span>
+                            </div>
+                            <input type="hidden" asp-for="AllChatsPost.Chat" class="form-control" value="@item.Chat" />
+                            <input type="hidden" asp-for="AllChatsPost.UserGet" class="form-control" value="@item.UserGet" />
+                            <input type="hidden" asp-for="AllChatsPost.MessegeVisable" class="form-control" value="@item.MessegeVisable" />
+                            <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    }
+                </td>
+                <td>
+                    
+                    @if (name == item.UserName)
+                    {
+                        <form method="post" asp-page-handler="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <input type="hidden" asp-for="AllChatsPost.Id" value="@item.Id" />
+                            <input type="hidden" asp-for="AllChatsPost.UserName" class="form-control" value="@item.UserName" />
+                            <input type="hidden" asp-for="AllChatsPost.Message" class="form-control" value="@item.Message" />
+                            <input type="hidden" asp-for="AllChatsPost.Chat" class="form-control" value="@item.Chat" />
+                            <input type="hidden" asp-for="AllChatsPost.UserGet" class="form-control" value="@item.UserGet" />
+                            <input type="hidden" asp-for="AllChatsPost.MessegeVisable" class="form-control" value="null" />
+                            <div class="form-group">
+                                <input type="submit" value="Delete for Me" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    }
+                    @if (name == item.UserName)
+                    {
+                        <form method="post" asp-route-id="@item.Id" asp-route-username="@item.UserName" asp-route-userget="@item.UserGet" asp-route-TypeChat="@item.Chat" asp-page-handler="Delete">
+
+                            <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AllChatsPost.Message" class="control-label"></label>
+                <input asp-for="AllChatsPost.Message" class="form-control" />
+                <span asp-validation-for="AllChatsPost.Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
